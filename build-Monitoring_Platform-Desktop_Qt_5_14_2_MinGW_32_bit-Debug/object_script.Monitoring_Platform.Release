@@ -1,0 +1,13 @@
+release/centerbar.o
+release/login.o
+release/statusbar.o
+release/successlogin.o
+release/titlebar.o
+release/main.o
+release/widget.o
+release/moc_centerbar.o
+release/moc_login.o
+release/moc_statusbar.o
+release/moc_successlogin.o
+release/moc_titlebar.o
+release/moc_widget.o

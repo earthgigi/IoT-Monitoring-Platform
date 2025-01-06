@@ -1,0 +1,13 @@
+debug/centerbar.o
+debug/login.o
+debug/statusbar.o
+debug/successlogin.o
+debug/titlebar.o
+debug/main.o
+debug/widget.o
+debug/moc_centerbar.o
+debug/moc_login.o
+debug/moc_statusbar.o
+debug/moc_successlogin.o
+debug/moc_titlebar.o
+debug/moc_widget.o

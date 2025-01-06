@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>beautityResources/caigou.gif</file>
+        <file>beautityResources/caigou_left.gif</file>
+        <file>beautityResources/caigou_right.gif</file>
+    </qresource>
+</RCC>

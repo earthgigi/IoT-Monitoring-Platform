@@ -17,7 +17,7 @@ bool DataBase::connect()
     m_db = QSqlDatabase::addDatabase("QSQLITE");
 
     //换成自己的数据库路径
-    m_db.setDatabaseName("E:/code/01aaaaaaaaaaaxiangmu/IoT-Monitoring-Platform/Monitoring_Platform/platform.db");
+    m_db.setDatabaseName("D:/learn/woniu_qianrushi/3/IoT project/IoT-Monitoring-Platform/IoT-Monitoring-Platform/Monitoring_Platform/platform.db");
     if (m_db.open()) {
         qDebug() << "成功连接到数据库";
         return true;

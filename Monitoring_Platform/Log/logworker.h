@@ -7,8 +7,8 @@
 #include <QList>
 #include <QFile>
 #include <QFileInfo>
+#include <QFileDialog>
 #include <QDate>
-#include <QFileInfo>
 #include <QTextStream>
 #include <QDir>
 struct LogEntry {
@@ -38,8 +38,10 @@ public slots:
     void onNextPage();           // 下一页
     void onPrevPage();           // 上一页
 
+    void onExportLog();
+
 public:
-    void loadLogsToTableWidget();
+    void initTabWidget();
 
     void updatePagination();     // 更新分页显示
     void loadLogsForPage(int page); // 加载指定页的日志

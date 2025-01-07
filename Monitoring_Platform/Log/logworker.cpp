@@ -1,6 +1,7 @@
 #include "logworker.h"
 #include "ui_logworker.h"
 #include <QDebug>
+
 LogWorker::LogWorker(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LogWorker) {
@@ -13,8 +14,8 @@ LogWorker::LogWorker(QWidget *parent) :
     // 按钮信号连接
     connect(ui->btn_prevPage, &QPushButton::clicked, this, &LogWorker::onPrevPage);
     connect(ui->btn_nextPage, &QPushButton::clicked, this, &LogWorker::onNextPage);
-
     connect(ui->btn_search,&QPushButton::clicked,this,&LogWorker::onFilterLogs);
+    connect(ui->btn_export,&QPushButton::clicked,this,&LogWorker::onExportLog);
 
     logData.append({1, "2015-01-06 10:00:00", "system", "INFO", "系统启动成功", "user123", "device456"});
     logData.append({2, "2016-01-06 10:05:00", "operation", "WARNING", "操作超时警告", "user123", "device789"});
@@ -32,7 +33,7 @@ LogWorker::LogWorker(QWidget *parent) :
     logData.append({14, "2025-04-06 11:05:00", "operation", "INFO", "任务执行完成", "user222", "device999"});
     logData.append({15, "2025-05-06 11:10:00", "system", "CRITICAL", "磁盘空间不足", "user000", "device888"});
 
-    loadLogsToTableWidget();
+    initTabWidget();
 
     // 初始加载数据
     totalPages = (logData.size() + itemsPerPage - 1) / itemsPerPage; // 计算总页数
@@ -41,58 +42,16 @@ LogWorker::LogWorker(QWidget *parent) :
 //    writeLogToFile(logData);
 }
 
-void LogWorker::loadLogsToTableWidget() {
-    //隐藏左侧行号
+void LogWorker::initTabWidget() {
+    // 隐藏左侧行号
     ui->tableWidget_log->verticalHeader()->setVisible(false);
+
     // 设置表头
-    ui->tableWidget_log->setColumnCount(7); //  7列
-    QStringList headers = {"ID", "时间", "类型", "等级", "内容", "用户ID","设备ID"};
+    ui->tableWidget_log->setColumnCount(7); // 7列
+    QStringList headers = {"ID", "时间", "类型", "等级", "内容", "用户ID", "设备ID"};
     ui->tableWidget_log->setHorizontalHeaderLabels(headers);
 
-    ui->tableWidget_log->setRowCount(logData.size()); // 设置行数
-
-    // 填充数据
-    for (int i = 0; i < logData.size(); ++i) {
-        const LogEntry &log = logData[i];
-        QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(log.log_id));
-        QTableWidgetItem *timeItem = new QTableWidgetItem(log.timestamp);
-        QTableWidgetItem *typeItem = new QTableWidgetItem(log.log_type);
-        QTableWidgetItem *levelItem = new QTableWidgetItem(log.log_level);
-        QTableWidgetItem *contentItem = new QTableWidgetItem(log.content);
-        QTableWidgetItem *userIdItem = new QTableWidgetItem(log.user_id);
-        QTableWidgetItem *deviceIdItem = new QTableWidgetItem(log.device_id);
-
-        // 根据日志级别设置颜色
-        QColor color;
-        if (log.log_level == "ERROR") {
-            color = Qt::red;
-        } else if (log.log_level == "WARNING") {
-            color = QColor(255, 165, 0); // 橙色
-        } else if (log.log_level == "INFO") {
-            color = Qt::green;
-        } else {
-            color = Qt::black; // 默认颜色
-        }
-
-        // 设置颜色到每个单元格
-        idItem->setForeground(color);
-        timeItem->setForeground(color);
-        typeItem->setForeground(color);
-        levelItem->setForeground(color);
-        contentItem->setForeground(color);
-        userIdItem->setForeground(color);
-        deviceIdItem->setForeground(color);
-
-        ui->tableWidget_log->setItem(i, 0, idItem);
-        ui->tableWidget_log->setItem(i, 1, timeItem);
-        ui->tableWidget_log->setItem(i, 2, typeItem);
-        ui->tableWidget_log->setItem(i, 3, levelItem);
-        ui->tableWidget_log->setItem(i, 4, contentItem);
-        ui->tableWidget_log->setItem(i, 5, userIdItem);
-        ui->tableWidget_log->setItem(i, 6, deviceIdItem);
-    }
-
-    // 设置列宽自适应
+    // 设置列宽按比例调整
     ui->tableWidget_log->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
@@ -169,23 +128,99 @@ void LogWorker::loadLogsForPage(int page) {
     int start = page * itemsPerPage;                     // 当前页起始索引
     int end = std::min(start + itemsPerPage, dataSource.size()); // 当前页结束索引
 
-    // 加载数据到表格
     for (int i = start; i < end; ++i) {
         const LogEntry &log = dataSource[i];
         int row = ui->tableWidget_log->rowCount();
         ui->tableWidget_log->insertRow(row);
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(log.log_id));
+        QTableWidgetItem *timeItem = new QTableWidgetItem(log.timestamp);
+        QTableWidgetItem *typeItem = new QTableWidgetItem(log.log_type);
+        QTableWidgetItem *levelItem = new QTableWidgetItem(log.log_level);
+        QTableWidgetItem *contentItem = new QTableWidgetItem(log.content);
+        QTableWidgetItem *userIdItem = new QTableWidgetItem(log.user_id);
+        QTableWidgetItem *deviceIdItem = new QTableWidgetItem(log.device_id);
 
-        ui->tableWidget_log->setItem(row, 0, new QTableWidgetItem(QString::number(log.log_id)));
-        ui->tableWidget_log->setItem(row, 1, new QTableWidgetItem(log.timestamp));
-        ui->tableWidget_log->setItem(row, 2, new QTableWidgetItem(log.log_type));
-        ui->tableWidget_log->setItem(row, 3, new QTableWidgetItem(log.log_level));
-        ui->tableWidget_log->setItem(row, 4, new QTableWidgetItem(log.content));
-        ui->tableWidget_log->setItem(row, 5, new QTableWidgetItem(log.user_id));
-        ui->tableWidget_log->setItem(row, 6, new QTableWidgetItem(log.device_id));
+        // 根据日志级别设置颜色
+        QColor color;
+        if (log.log_level == "ERROR") {
+            color = Qt::red;
+        } else if (log.log_level == "WARNING") {
+            color = QColor(255, 165, 0); // 橙色
+        } else if (log.log_level == "INFO") {
+            color = Qt::blue;
+        } else {
+            color = Qt::black; // 默认颜色
+        }
+
+        // 设置颜色到每个单元格
+        idItem->setForeground(color);
+        timeItem->setForeground(color);
+        typeItem->setForeground(color);
+        levelItem->setForeground(color);
+        contentItem->setForeground(color);
+        userIdItem->setForeground(color);
+        deviceIdItem->setForeground(color);
+
+        // 将单元格添加到表格
+        ui->tableWidget_log->setItem(i - start, 0, idItem);
+        ui->tableWidget_log->setItem(i - start, 1, timeItem);
+        ui->tableWidget_log->setItem(i - start, 2, typeItem);
+        ui->tableWidget_log->setItem(i - start, 3, levelItem);
+        ui->tableWidget_log->setItem(i - start, 4, contentItem);
+        ui->tableWidget_log->setItem(i - start, 5, userIdItem);
+        ui->tableWidget_log->setItem(i - start, 6, deviceIdItem);
     }
-
     // 更新分页信息
     updatePagination();
+}
+
+void LogWorker::onExportLog() {
+    // 打开文件对话框，让用户选择文件保存路径
+    QString filePath = QFileDialog::getSaveFileName(
+        this,
+        tr("导出日志文件"),
+        "",
+        tr("文本文件 (*.txt);;CSV文件 (*.csv)")
+    );
+
+    // 如果用户未选择路径，直接返回
+    if (filePath.isEmpty()) {
+        return;
+    }
+
+    // 判断是文本文件还是 CSV 文件
+    bool isCSV = filePath.endsWith(".csv");
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        // 打开文件失败
+        qDebug() << "无法打开文件进行写入：" << filePath;
+        return;
+    }
+
+    QTextStream out(&file);
+    out.setCodec("UTF-8"); // 设置编码为 UTF-8，确保中文正常显示
+
+    // 写入表头
+    QStringList headers;
+    for (int col = 0; col < ui->tableWidget_log->columnCount(); ++col) {
+        headers << ui->tableWidget_log->horizontalHeaderItem(col)->text();
+    }
+    out << headers.join(isCSV ? "," : "\t") << "\n"; // 用逗号或制表符分隔表头
+
+    // 遍历搜索的日志数据并写入文件
+    for (const LogEntry &log : filteredLogData) {
+        QStringList rowData;
+        rowData << QString::number(log.log_id) // 转为字符串
+                << log.timestamp
+                << log.log_type
+                << log.log_level
+                << log.content
+                << log.user_id
+                << log.device_id;
+        out << rowData.join(isCSV ? "," : "\t") << "\n"; // 用逗号或制表符分隔每行数据
+    }
+    file.close();
 }
 
 LogWorker::~LogWorker() {

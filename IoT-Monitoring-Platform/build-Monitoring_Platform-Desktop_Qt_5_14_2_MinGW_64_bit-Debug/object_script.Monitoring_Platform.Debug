@@ -7,6 +7,7 @@ debug/users.o
 debug/logworker.o
 debug/adddevicedialog.o
 debug/device.o
+debug/datamonitor.o
 debug/database.o
 debug/main.o
 debug/widget.o
@@ -20,5 +21,6 @@ debug/moc_users.o
 debug/moc_logworker.o
 debug/moc_adddevicedialog.o
 debug/moc_device.o
+debug/moc_datamonitor.o
 debug/moc_database.o
 debug/moc_widget.o

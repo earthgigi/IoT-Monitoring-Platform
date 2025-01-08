@@ -232,6 +232,7 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/qt_config.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/toolchain.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -268,7 +269,6 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Sql.prl \
 		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		../../../../QT5.14/5.14.2/mingw73_64/lib/qtmain.prl \
-		.qmake.stash \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/build_pass.prf \
 		../Monitoring_Platform/BeautifyResources.qrc
 	$(QMAKE) -o Makefile ../Monitoring_Platform/Monitoring_Platform.pro -spec win32-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -434,6 +434,7 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/qt_config.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/toolchain.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/default_pre.prf:
@@ -470,7 +471,6 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 ../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Sql.prl:
 ../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Core.prl:
 ../../../../QT5.14/5.14.2/mingw73_64/lib/qtmain.prl:
-.qmake.stash:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
 ../Monitoring_Platform/BeautifyResources.qrc:
 qmake: FORCE

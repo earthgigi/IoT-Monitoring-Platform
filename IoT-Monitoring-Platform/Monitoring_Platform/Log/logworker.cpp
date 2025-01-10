@@ -2,8 +2,6 @@
 #include "ui_logworker.h"
 #include <QDebug>
 
-DataBase& db = DataBase::getDatabase();
-
 LogWorker::LogWorker(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LogWorker) {
@@ -11,16 +9,61 @@ LogWorker::LogWorker(QWidget *parent) :
 
     //设置QTabWidget表头，并尝试在数据库中创建日志表
     initTabWidget();
-    // 设置表格为只读、禁止编辑
-    ui->tableWidget_log->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableWidget_log->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidget_log->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // 按钮信号连接
     connect(ui->btn_prevPage, &QPushButton::clicked, this, &LogWorker::onPrevPage);
     connect(ui->btn_nextPage, &QPushButton::clicked, this, &LogWorker::onNextPage);
     connect(ui->btn_search,&QPushButton::clicked,this,&LogWorker::onFilterLogs);
     connect(ui->btn_export,&QPushButton::clicked,this,&LogWorker::onExportLog);
+
+
+    // 初始加载数据
+    totalPages = (logData.size() + itemsPerPage - 1) / itemsPerPage; // 计算总页数
+    loadLogsForPage(0); // 加载第一页数据
+
+}
+
+void LogWorker::initTabWidget() {
+    //获取数据库单例
+    DataBase& db = DataBase::getDatabase();
+
+    // 隐藏左侧行号
+    ui->tableWidget_log->verticalHeader()->setVisible(false);
+
+    // 设置表头
+    ui->tableWidget_log->setColumnCount(7); // 7列
+    QStringList headers = {"ID", "时间", "类型", "等级", "内容", "用户ID", "设备ID"};
+    ui->tableWidget_log->setHorizontalHeaderLabels(headers);
+
+    // 设置列宽按比例调整
+    ui->tableWidget_log->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    // 设置表格为只读、禁止编辑
+    ui->tableWidget_log->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget_log->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_log->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    if (!db.connect()) {
+        qDebug() << "数据库错误,日志无法连接到数据库!";
+        return;
+    }
+    QString createTableQuery = R"(
+        CREATE TABLE IF NOT EXISTS system_logs (
+            log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp DATETIME NOT NULL,
+            log_type TEXT NOT NULL,
+            log_level TEXT NOT NULL,
+            content TEXT NOT NULL,
+            user_id INTEGER,
+            device_id INTEGER
+        );
+    )";
+    // 执行 SQL 查询（创建表）
+    if (db.executeQuery(createTableQuery)) {
+        qDebug() << "Table 'system_logs' created successfully!";
+    } else {
+        qDebug() << "Failed to create table 'system_logs'.";
+    }
     //添加一些测试日志（完成后删除）
     if(0) {
         QVector<QList<QString>> logs;
@@ -49,54 +92,12 @@ LogWorker::LogWorker(QWidget *parent) :
             addLogToDB(log);
         }
     }
-
-    QString sql_logs = "SELECT *FROM system_logs";
-    logData = db.fetchResults(sql_logs);
-
-    // 初始加载数据
-    totalPages = (logData.size() + itemsPerPage - 1) / itemsPerPage; // 计算总页数
-    loadLogsForPage(0); // 加载第一页数据
-
-}
-
-void LogWorker::initTabWidget() {
-    // 隐藏左侧行号
-    ui->tableWidget_log->verticalHeader()->setVisible(false);
-
-    // 设置表头
-    ui->tableWidget_log->setColumnCount(7); // 7列
-    QStringList headers = {"ID", "时间", "类型", "等级", "内容", "用户ID", "设备ID"};
-    ui->tableWidget_log->setHorizontalHeaderLabels(headers);
-
-    // 设置列宽按比例调整
-    ui->tableWidget_log->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-
-    if (!db.connect()) {
-        qDebug() << "数据库错误,日志无法连接到数据库!";
-        return;
-    }
-    QString createTableQuery = R"(
-        CREATE TABLE IF NOT EXISTS system_logs (
-            log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp DATETIME NOT NULL,
-            log_type TEXT NOT NULL,
-            log_level TEXT NOT NULL,
-            content TEXT NOT NULL,
-            user_id INTEGER,
-            device_id INTEGER
-        );
-    )";
-    // 执行 SQL 查询（创建表）
-    if (db.executeQuery(createTableQuery)) {
-        qDebug() << "Table 'system_logs' created successfully!";
-    } else {
-        qDebug() << "Failed to create table 'system_logs'.";
-    }
-
 }
 
 void LogWorker::onFilterLogs() {
+    //获取数据库单例
+    DataBase& db = DataBase::getDatabase();
+
     filteredLogData.clear(); // 确保每次搜索时清空过滤后的日志数据
 
     QString keyword = ui->edit_keyWord->text(); // 获取关键字
@@ -106,7 +107,9 @@ void LogWorker::onFilterLogs() {
 
     // 清空当前表格内容
     ui->tableWidget_log->setRowCount(0);
-
+    //查询日志数据
+    QString sql_logs = "SELECT *FROM system_logs";
+    logData = db.fetchResults(sql_logs);
     // 遍历日志数据，根据条件过滤
     for (const auto& log : logData) {
         bool matches = true;

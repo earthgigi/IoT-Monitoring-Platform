@@ -11,9 +11,9 @@ int main(int argc, char *argv[])
 //    Widget w;
 //    w.show();
 
-//    // 创建日志窗口
-//    LogWorker logWorkerWindow; // 假设 LogWorker 是继承 QWidget 的日志模块
-//    logWorkerWindow.show();
+    // 创建日志窗口
+    LogWorker logWorkerWindow; // 假设 LogWorker 是继承 QWidget 的日志模块
+    logWorkerWindow.show();
 
     // 创建数据监控窗口
     DataMonitor dataMonitorWindow; // 假设 LogWorker 是继承 QWidget 的日志模块

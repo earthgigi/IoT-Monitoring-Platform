@@ -256,6 +256,7 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/moc.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/opengl.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/uic.prf \
+		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/dumpcpp.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/qmake_use.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/file_copies.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/windows.prf \
@@ -264,6 +265,9 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/yacc.prf \
 		../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/lex.prf \
 		../Monitoring_Platform/Monitoring_Platform.pro \
+		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5AxContainer.prl \
+		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5AxBase.prl \
+		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Charts.prl \
 		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Widgets.prl \
 		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Gui.prl \
 		../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Sql.prl \
@@ -458,6 +462,7 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/moc.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/opengl.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/uic.prf:
+../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/dumpcpp.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/qmake_use.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/file_copies.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/win32/windows.prf:
@@ -466,6 +471,9 @@ Makefile: ../Monitoring_Platform/Monitoring_Platform.pro ../../../../QT5.14/5.14
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/yacc.prf:
 ../../../../QT5.14/5.14.2/mingw73_64/mkspecs/features/lex.prf:
 ../Monitoring_Platform/Monitoring_Platform.pro:
+../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5AxContainer.prl:
+../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5AxBase.prl:
+../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Charts.prl:
 ../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Widgets.prl:
 ../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 ../../../../QT5.14/5.14.2/mingw73_64/lib/Qt5Sql.prl:

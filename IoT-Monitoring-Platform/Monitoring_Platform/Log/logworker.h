@@ -35,7 +35,7 @@ public:
 
     void updatePagination();     // 更新分页显示
     void loadLogsForPage(int page); // 加载指定页的日志
-    bool addLogToDB(QList<QString> newLog);
+    static bool addLogToDB(QList<QString> newLog);
 
 private:
     Ui::LogWorker *ui;

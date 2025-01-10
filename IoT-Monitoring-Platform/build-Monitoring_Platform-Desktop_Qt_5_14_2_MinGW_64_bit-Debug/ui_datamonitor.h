@@ -12,7 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QDateEdit>
+#include <QtWidgets/QDateTimeEdit>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -29,20 +29,21 @@ QT_BEGIN_NAMESPACE
 class Ui_DataMonitor
 {
 public:
-    QGridLayout *gridLayout_3;
+    QGridLayout *gridLayout_4;
     QGroupBox *groupBox;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
-    QDateEdit *edit_startDate;
+    QDateTimeEdit *edit_startDate;
     QLabel *label_2;
-    QDateEdit *edit_endDate;
+    QDateTimeEdit *edit_endDate;
     QLabel *label_3;
     QLineEdit *edit_deviceName;
     QLabel *label_4;
     QComboBox *comboBox_deviceType;
     QPushButton *btn_search;
     QGroupBox *groupBox_2;
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_3;
     QTableWidget *tableWidget_deviceData;
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout_2;
@@ -60,21 +61,21 @@ public:
         if (DataMonitor->objectName().isEmpty())
             DataMonitor->setObjectName(QString::fromUtf8("DataMonitor"));
         DataMonitor->resize(1168, 863);
-        gridLayout_3 = new QGridLayout(DataMonitor);
-        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        gridLayout_4 = new QGridLayout(DataMonitor);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         groupBox = new QGroupBox(DataMonitor);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        horizontalLayout = new QHBoxLayout(groupBox);
+        gridLayout = new QGridLayout(groupBox);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         label = new QLabel(groupBox);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
 
-        edit_startDate = new QDateEdit(groupBox);
+        edit_startDate = new QDateTimeEdit(groupBox);
         edit_startDate->setObjectName(QString::fromUtf8("edit_startDate"));
-        edit_startDate->setMinimumSize(QSize(120, 0));
-        edit_startDate->setMaximumSize(QSize(120, 16777215));
 
         horizontalLayout->addWidget(edit_startDate);
 
@@ -83,10 +84,8 @@ public:
 
         horizontalLayout->addWidget(label_2);
 
-        edit_endDate = new QDateEdit(groupBox);
+        edit_endDate = new QDateTimeEdit(groupBox);
         edit_endDate->setObjectName(QString::fromUtf8("edit_endDate"));
-        edit_endDate->setMinimumSize(QSize(120, 0));
-        edit_endDate->setMaximumSize(QSize(120, 16777215));
 
         horizontalLayout->addWidget(edit_endDate);
 
@@ -120,19 +119,22 @@ public:
         horizontalLayout->addWidget(btn_search);
 
 
-        gridLayout_3->addWidget(groupBox, 0, 0, 1, 1);
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
+
+        gridLayout_4->addWidget(groupBox, 0, 0, 1, 1);
 
         groupBox_2 = new QGroupBox(DataMonitor);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        gridLayout = new QGridLayout(groupBox_2);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout_3 = new QGridLayout(groupBox_2);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         tableWidget_deviceData = new QTableWidget(groupBox_2);
         tableWidget_deviceData->setObjectName(QString::fromUtf8("tableWidget_deviceData"));
 
-        gridLayout->addWidget(tableWidget_deviceData, 1, 0, 1, 1);
+        gridLayout_3->addWidget(tableWidget_deviceData, 0, 0, 1, 1);
 
 
-        gridLayout_3->addWidget(groupBox_2, 1, 0, 1, 1);
+        gridLayout_4->addWidget(groupBox_2, 1, 0, 1, 1);
 
         groupBox_3 = new QGroupBox(DataMonitor);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
@@ -177,7 +179,7 @@ public:
         gridLayout_2->addLayout(horizontalLayout_2, 0, 0, 1, 1);
 
 
-        gridLayout_3->addWidget(groupBox_3, 2, 0, 1, 1);
+        gridLayout_4->addWidget(groupBox_3, 2, 0, 1, 1);
 
 
         retranslateUi(DataMonitor);
@@ -194,7 +196,7 @@ public:
         label_3->setText(QCoreApplication::translate("DataMonitor", "\350\256\276\345\244\207\345\220\215", nullptr));
         label_4->setText(QCoreApplication::translate("DataMonitor", "\350\256\276\345\244\207\347\261\273\345\236\213", nullptr));
         comboBox_deviceType->setItemText(0, QCoreApplication::translate("DataMonitor", "ALL", nullptr));
-        comboBox_deviceType->setItemText(1, QCoreApplication::translate("DataMonitor", "temprature", nullptr));
+        comboBox_deviceType->setItemText(1, QCoreApplication::translate("DataMonitor", "temperature", nullptr));
         comboBox_deviceType->setItemText(2, QCoreApplication::translate("DataMonitor", "humidity", nullptr));
         comboBox_deviceType->setItemText(3, QCoreApplication::translate("DataMonitor", "light", nullptr));
 

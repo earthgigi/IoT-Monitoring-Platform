@@ -4,6 +4,7 @@ release/statusbar.o
 release/successlogin.o
 release/titlebar.o
 release/users.o
+release/logfilehandler.o
 release/logworker.o
 release/adddevicedialog.o
 release/device.o

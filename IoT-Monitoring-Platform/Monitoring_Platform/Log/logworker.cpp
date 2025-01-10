@@ -6,7 +6,6 @@ LogWorker::LogWorker(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LogWorker) {
     ui->setupUi(this);
-
     //设置QTabWidget表头，并尝试在数据库中创建日志表
     initTabWidget();
 
@@ -15,7 +14,6 @@ LogWorker::LogWorker(QWidget *parent) :
     connect(ui->btn_nextPage, &QPushButton::clicked, this, &LogWorker::onNextPage);
     connect(ui->btn_search,&QPushButton::clicked,this,&LogWorker::onFilterLogs);
     connect(ui->btn_export,&QPushButton::clicked,this,&LogWorker::onExportLog);
-
 
     // 初始加载数据
     totalPages = (logData.size() + itemsPerPage - 1) / itemsPerPage; // 计算总页数
@@ -63,34 +61,6 @@ void LogWorker::initTabWidget() {
         qDebug() << "Table 'system_logs' created successfully!";
     } else {
         qDebug() << "Failed to create table 'system_logs'.";
-    }
-    //添加一些测试日志（完成后删除）
-    if(0) {
-        QVector<QList<QString>> logs;
-        // 添加日志
-        logs.append({"2015-01-07 10:00:00", "system", "INFO", "系统启动成功", "user123", "device456"});
-        logs.append({"2016-01-07 10:00:00", "operation", "WARNING", "CPU温度过高", "user124", "device457"});
-        logs.append({"2017-01-07 10:00:00", "alarm", "ERROR", "内存使用率超过90%", "user125", "device458"});
-        logs.append({"2018-01-07 10:00:00", "system", "INFO", "磁盘检查完成，无错误", "user126", "device459"});
-        logs.append({"2019-01-07 10:00:00", "exception", "CRITICAL", "网络连接丢失", "user127", "device460"});
-        logs.append({"2020-01-07 10:00:00", "operation", "INFO", "用户登录成功", "user128", "device461"});
-        logs.append({"2021-01-07 10:00:00", "alarm", "ERROR", "风扇故障", "user129", "device462"});
-        logs.append({"2022-01-07 10:00:00", "system", "INFO", "日志文件清理完成", "user130", "device463"});
-        logs.append({"2023-01-07 10:00:00", "operation", "WARNING", "磁盘空间不足20%", "user131", "device464"});
-        logs.append({"2024-01-07 10:00:00", "alarm", "ERROR", "主板温度异常", "user132", "device465"});
-        logs.append({"2025-01-07 10:00:00", "system", "INFO", "更新完成，系统重新启动", "user133", "device466"});
-        logs.append({"2015-02-07 10:00:00", "exception", "CRITICAL", "应用程序崩溃", "user134", "device467"});
-        logs.append({"2016-02-07 10:00:00", "operation", "INFO", "用户退出系统", "user135", "device468"});
-        logs.append({"2017-02-07 10:00:00", "alarm", "WARNING", "硬盘读写速度变慢", "user136", "device469"});
-        logs.append({"2018-02-07 10:00:00", "system", "INFO", "系统进入低功耗模式", "user137", "device470"});
-        logs.append({"2019-02-07 10:00:00", "alarm", "CRITICAL", "电源故障", "user138", "device471"});
-        logs.append({"2020-02-07 10:00:00", "operation", "INFO", "管理员更改配置", "user139", "device472"});
-        logs.append({"2021-02-07 10:00:00", "system", "INFO", "自动备份完成", "user140", "device473"});
-        logs.append({"2022-02-07 10:00:00", "alarm", "WARNING", "网络延迟较高", "user141", "device474"});
-        logs.append({"2023-02-07 10:00:00", "exception", "CRITICAL", "数据库连接失败", "user142", "device475"});
-        for (const auto &log : logs) {
-            addLogToDB(log);
-        }
     }
 }
 
@@ -265,6 +235,7 @@ void LogWorker::onExportLog() {
 }
 
 bool LogWorker::addLogToDB(QList<QString> newLog) {
+    LogFileHandler::addLogToFile(newLog);
     // 检查 newLog 是否包含足够的字段
     if (newLog.size() < 6) {
         qDebug() << "Invalid log data, insertion failed.";

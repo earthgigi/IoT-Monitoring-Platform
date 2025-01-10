@@ -4,6 +4,7 @@ debug/statusbar.o
 debug/successlogin.o
 debug/titlebar.o
 debug/users.o
+debug/logfilehandler.o
 debug/logworker.o
 debug/adddevicedialog.o
 debug/device.o

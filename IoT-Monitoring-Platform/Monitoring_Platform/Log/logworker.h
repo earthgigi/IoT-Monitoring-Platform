@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <DataBase/database.h>
+#include <Log/logfilehandler.h>
 #include <QString>
 #include <QList>
 #include <QFile>
@@ -10,6 +11,7 @@
 #include <QDate>
 #include <QTextStream>
 #include <QDir>
+#include <QDateTime>
 
 namespace Ui {
 class LogWorker;

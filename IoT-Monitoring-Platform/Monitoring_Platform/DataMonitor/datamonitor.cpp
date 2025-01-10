@@ -153,6 +153,15 @@ void DataMonitor::onFilterData() {
             filteredDeviceData.append(log);
         }
     }
+
+    QList<QString> newLog = {QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
+                             ,"operation"
+                             ,"INFO"
+                             ,"筛选设备数据"
+                             ,""
+                             ,""};
+    LogWorker::addLogToDB(newLog);
+
     // 更新分页数据
     totalPages = (filteredDeviceData.size() + itemsPerPage - 1) / itemsPerPage; // 计算总页数
     loadDataForPage(0); // 加载第一页搜索结果
@@ -265,7 +274,7 @@ void DataMonitor::onExportData() {
                              ,"operation"
                              ,"INFO"
                              ,"导出设备数据"
-                             ,"admin123"
+                             ,""
                              ,""};
     LogWorker::addLogToDB(newLog);
 }
@@ -352,6 +361,14 @@ void DataMonitor::onChart() {
     // 将 QChartView 添加到弹窗布局
     QVBoxLayout *layout = new QVBoxLayout(dialog);
     layout->addWidget(chartView);
+
+    QList<QString> newLog = {QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
+                             ,"operation"
+                             ,"INFO"
+                             ,"数据生成折线图"
+                             ,""
+                             ,""};
+    LogWorker::addLogToDB(newLog);
 
     // 显示弹窗
     dialog->exec();

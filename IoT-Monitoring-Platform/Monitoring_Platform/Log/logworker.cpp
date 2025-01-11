@@ -24,7 +24,8 @@ LogWorker::LogWorker(QWidget *parent) :
 void LogWorker::initTabWidget() {
     //获取数据库单例
     DataBase& db = DataBase::getDatabase();
-
+    //初始化结束时间为当前时间
+    ui->edit_endDate->setDateTime(QDateTime::currentDateTime());
     // 隐藏左侧行号
     ui->tableWidget_log->verticalHeader()->setVisible(false);
 

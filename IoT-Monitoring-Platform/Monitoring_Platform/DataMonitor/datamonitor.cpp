@@ -57,6 +57,7 @@ void DataMonitor::initTabWidget() {
             humidity REAL,                              -- 湿度，可空
             light REAL,                                 -- 光照强度，可空
             FOREIGN KEY (device_id) REFERENCES device(device_id) -- 外键约束，关联设备表
+            ON DELETE CASCADE                            --指定级联删除
         );
     )";
     // 执行 SQL 查询（创建表）
@@ -377,19 +378,38 @@ void DataMonitor::onChart() {
 void DataMonitor::onInsertRandomData() {
     //获取数据库单例
     DataBase& db = DataBase::getDatabase();
+
     // 定义设备数据范围
-    QMap<int, QPair<double, double>> ranges = {
-        {1, {20.0, 30.0}}, // 温度范围：20 ~ 30
-        {2, {30.0, 60.0}}, // 湿度范围：30 ~ 60
-        {3, {100.0, 500.0}} // 光强范围：100 ~ 500
+    QMap<QString, QPair<double, double>> ranges = {
+        {"temperature", {20.0, 30.0}}, // 温度范围：20 ~ 30
+        {"humidity", {30.0, 60.0}},    // 湿度范围：30 ~ 60
+        {"light", {100.0, 500.0}}      // 光强范围：100 ~ 500
     };
 
+    // 获取所有设备信息，设备的类型（如温度、湿度、光强）以及设备ID
+    QSqlQuery deviceQuery("SELECT device_id, type FROM device");
+    if (!deviceQuery.exec()) {
+        qDebug() << "Failed to fetch device information:" << deviceQuery.lastError();
+        return;
+    }
+
+    // 插入随机数据
     QSqlQuery query;
-    foreach (int deviceId, ranges.keys()) {
+    while (deviceQuery.next()) {
+        int deviceId = deviceQuery.value("device_id").toInt();
+        QString deviceType = deviceQuery.value("type").toString();
+
+        // 根据设备类型选择随机值的范围
+        double minValue = 0.0, maxValue = 0.0;
+        if (ranges.contains(deviceType)) {
+            minValue = ranges[deviceType].first;
+            maxValue = ranges[deviceType].second;
+        } else {
+            qDebug() << "Unknown device type:" << deviceType;
+            continue;  // 如果设备类型未定义，跳过该设备
+        }
+
         // 生成随机值
-        double minValue = ranges[deviceId].first;
-        double maxValue = ranges[deviceId].second;
-        // 调用浮点重载，生成随机值
         double value = minValue + QRandomGenerator::global()->bounded(static_cast<float>(maxValue - minValue));
         value = qRound(value * 10) / 10.0; // 保留一位小数
 
@@ -400,15 +420,15 @@ void DataMonitor::onInsertRandomData() {
         query.bindValue(":timestamp", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
 
         // 根据设备类型设置相应数据
-        if (deviceId == 1) { // 温度设备
+        if (deviceType == "temperature") {
             query.bindValue(":temperature", value);
             query.bindValue(":humidity", QVariant());
             query.bindValue(":light", QVariant());
-        } else if (deviceId == 2) { // 湿度设备
+        } else if (deviceType == "humidity") {
             query.bindValue(":temperature", QVariant());
             query.bindValue(":humidity", value);
             query.bindValue(":light", QVariant());
-        } else if (deviceId == 3) { // 光强设备
+        } else if (deviceType == "light") {
             query.bindValue(":temperature", QVariant());
             query.bindValue(":humidity", QVariant());
             query.bindValue(":light", value);
